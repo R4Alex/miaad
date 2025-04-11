@@ -1,0 +1,1 @@
+/mnt/e/Alex/MEGA/Maestria/2. Programación para Analítica Prescriptiva y de Apoyo a la Decisión/Semana 10 (24 de marzo - 30 de marzo)/Caso 1/nl_exercise1.py
