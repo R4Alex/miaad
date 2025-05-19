@@ -16,8 +16,6 @@ frame["Col4"] = [value1 + value2 for value1, value2 in zip(frame["Col1"], frame[
 pprint(frame)
 print("")
 
-[frame['Col3'] < 10]
+frame = frame[frame['Col3'] > 10]
 
 pprint(frame)
-
-import pdb; pdb.set_trace()
