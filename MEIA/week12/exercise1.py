@@ -1,3 +1,13 @@
+# 1. Basic Operations
+# Objective: Create and manipulate arrays.
+# Instructions:
+
+# Create an array with 10 elements containing values from 1 to 10.
+
+# Calculate the mean, median, and standard deviation of the values.
+
+# Multiply each value by 2.
+
 import numpy as np
 from pprint import pprint
 

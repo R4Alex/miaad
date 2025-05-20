@@ -1,3 +1,13 @@
+# 3. Descriptive Statistics
+# Objective: Apply basic statistical analysis.
+# Instructions:
+
+# Create a DataFrame with 100 random values between 0 and 50.
+
+# Calculate the mean, median, and mode of the values.
+
+# Find the minimum and maximum values in the DataFrame.
+
 import numpy as np
 import pandas as pd
 from pprint import pprint

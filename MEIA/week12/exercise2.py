@@ -1,3 +1,15 @@
+# 2. DataFrame Operations
+# Objective: Create and manipulate a DataFrame.
+# Instructions:
+
+# Create a DataFrame with 3 columns (A, B, C) and 5 rows of random integers.
+
+# Rename the columns to Col1, Col2, Col3.
+
+# Add a new column that is the sum of Col1 and Col2.
+
+# Delete all rows where the value in Col3 is less than 10.
+
 import numpy as np
 import pandas as pd
 from pprint import pprint
