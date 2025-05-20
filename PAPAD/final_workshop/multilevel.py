@@ -30,6 +30,7 @@ def demand_rule(model, j, k):
     return sum(model.y[c,j,k] for c in model.C) == model.d[j,k]
 model.Demanda = pyo.Constraint(model.J, model.K, rule=demand_rule)
 
+
 # Restricción 2
 def balance_centro_rule(model, c, k):
     return sum(model.x[p,c,k] for p in model.P) == sum(model.y[c,j,k] for j in model.J)
