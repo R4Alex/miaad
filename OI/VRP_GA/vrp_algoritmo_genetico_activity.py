@@ -191,6 +191,8 @@ population = initial_population(population_size)
 best_history = []
 avg_history = []
 
+elitism = 5
+
 for g in range(generations):
     fitness_values = [fitness(ind,
                               capacity=CAPACITY,
@@ -208,7 +210,18 @@ for g in range(generations):
     # Selección → Cruza → Mutación
     selected = tournament_selection(population, fitness_values, k=tournament_k)
     offspring = crossover_population(selected, probability_crossover)
-    population = mutate_population(offspring, rate=mutation_rate)
+    offspring = mutate_population(offspring, rate=mutation_rate)
+
+    # ---- ELITISMO ----
+    if elitism > 0:
+        # Ordena población actual por fitness
+        elite_idx = np.argsort(fitness_values)[:elitism]
+        elites = [population[i][:] for i in elite_idx]
+        # Reemplaza parte de la descendencia con los elites
+        offspring[:elitism] = elites
+
+    # Nueva población
+    population = offspring
 
 # ------------------------------------------------------------
 # 8) Resultados: mejor solución, rutas y gráficas
