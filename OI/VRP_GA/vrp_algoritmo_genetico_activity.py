@@ -125,6 +125,13 @@ def tournament_selection(population, fitness_values, k=3):
         selected.append(winner)
     return selected
 
+def roulette_selection(population, fitness_values):
+    # Como fitness es distancia (minimizar), invertimos para tener mayores=mejor
+    inv_fit = np.max(fitness_values) - np.array(fitness_values) + 1e-6
+    probs = inv_fit / np.sum(inv_fit)
+    selected = random.choices(population, weights=probs, k=len(population))
+    return selected
+
 def crossover(parent1, parent2):
     """
     OX simple (Order Crossover-like)
@@ -208,7 +215,8 @@ for g in range(generations):
     avg_history.append(avg)
 
     # Selección → Cruza → Mutación
-    selected = tournament_selection(population, fitness_values, k=tournament_k)
+    # selected = tournament_selection(population, fitness_values, k=tournament_k)
+    selected = roulette_selection(population, fitness_values)
     offspring = crossover_population(selected, probability_crossover)
     offspring = mutate_population(offspring, rate=mutation_rate)
 
