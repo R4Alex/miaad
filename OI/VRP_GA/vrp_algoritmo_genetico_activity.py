@@ -141,15 +141,18 @@ def crossover(parent1, parent2):
             child[ptr] = parent2[i]
     return child
 
-def crossover_population(parents):
+def crossover_population(parents, probability_crossover):
     offspring = []
-    # Si #padres es impar, ignoramos el último para emparejar
     for i in range(0, len(parents) - 1, 2):
         p1, p2 = parents[i], parents[i+1]
-        c1 = crossover(p1, p2)
-        c2 = crossover(p2, p1)
+        if random.random() < probability_crossover:
+            # Sí se cruzan
+            c1 = crossover(p1, p2)
+            c2 = crossover(p2, p1)
+        else:
+            # No se cruzan, se copian tal cual
+            c1, c2 = p1[:], p2[:]
         offspring.extend([c1, c2])
-    # Si quieres, clona el último si población impar:
     if len(parents) % 2 == 1:
         offspring.append(parents[-1][:])
     return offspring
@@ -182,6 +185,7 @@ population_size = 30
 generations = 1000
 mutation_rate = 0.1
 tournament_k = 3
+probability_crossover =  0.9
 
 population = initial_population(population_size)
 best_history = []
@@ -203,7 +207,7 @@ for g in range(generations):
 
     # Selección → Cruza → Mutación
     selected = tournament_selection(population, fitness_values, k=tournament_k)
-    offspring = crossover_population(selected)
+    offspring = crossover_population(selected, probability_crossover)
     population = mutate_population(offspring, rate=mutation_rate)
 
 # ------------------------------------------------------------
