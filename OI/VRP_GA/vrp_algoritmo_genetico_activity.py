@@ -186,19 +186,24 @@ CAPACITY = 30
 MAX_ROUTES = 4
 ALPHA = 10000
 
-# population_size = 80
-population_size = 30
-# generations = 200
-generations = 1000
-mutation_rate = 0.1
+# Explora configuraciones de parámetros:
+# Tamaño de población N ∈ {30, 80, 150}
+# Probabilidad de cruza pc ∈ {0.6, 0.9}
+# Probabilidad de mutación pm ∈ {0.02, 0.1, 0.2}
+# Elitismo e ∈ {0, 2, 5}
+# Selección: torneo vs ruleta (o ranking si lo implementas)
+
 tournament_k = 3
-probability_crossover =  0.9
+population_size = 80
+probability_crossover = 0.9
+mutation_rate = 0.1
+elitism = 0
+generations = 100
 
 population = initial_population(population_size)
 best_history = []
 avg_history = []
 
-elitism = 5
 
 for g in range(generations):
     fitness_values = [fitness(ind,
