@@ -125,13 +125,6 @@ def tournament_selection(population, fitness_values, k=3):
         selected.append(winner)
     return selected
 
-def roulette_selection(population, fitness_values):
-    # Como fitness es distancia (minimizar), invertimos para tener mayores=mejor
-    inv_fit = np.max(fitness_values) - np.array(fitness_values) + 1e-6
-    probs = inv_fit / np.sum(inv_fit)
-    selected = random.choices(population, weights=probs, k=len(population))
-    return selected
-
 def crossover(parent1, parent2):
     """
     OX simple (Order Crossover-like)
@@ -148,18 +141,15 @@ def crossover(parent1, parent2):
             child[ptr] = parent2[i]
     return child
 
-def crossover_population(parents, probability_crossover):
+def crossover_population(parents):
     offspring = []
+    # Si #padres es impar, ignoramos el último para emparejar
     for i in range(0, len(parents) - 1, 2):
         p1, p2 = parents[i], parents[i+1]
-        if random.random() < probability_crossover:
-            # Sí se cruzan
-            c1 = crossover(p1, p2)
-            c2 = crossover(p2, p1)
-        else:
-            # No se cruzan, se copian tal cual
-            c1, c2 = p1[:], p2[:]
+        c1 = crossover(p1, p2)
+        c2 = crossover(p2, p1)
         offspring.extend([c1, c2])
+    # Si quieres, clona el último si población impar:
     if len(parents) % 2 == 1:
         offspring.append(parents[-1][:])
     return offspring
@@ -186,24 +176,16 @@ CAPACITY = 30
 MAX_ROUTES = 4
 ALPHA = 10000
 
-# Explora configuraciones de parámetros:
-# Tamaño de población N ∈ {30, 80, 150}
-# Probabilidad de cruza pc ∈ {0.6, 0.9}
-# Probabilidad de mutación pm ∈ {0.02, 0.1, 0.2}
-# Elitismo e ∈ {0, 2, 5}
-# Selección: torneo vs ruleta (o ranking si lo implementas)
-
+# population_size = 80
+population_size = 30
+# generations = 200
+generations = 1000
+mutation_rate = 0.1
 tournament_k = 3
-population_size = 80
-probability_crossover = 0.9
-mutation_rate = 0.2
-elitism = 2
-generations = 100
 
 population = initial_population(population_size)
 best_history = []
 avg_history = []
-
 
 for g in range(generations):
     fitness_values = [fitness(ind,
@@ -221,20 +203,8 @@ for g in range(generations):
 
     # Selección → Cruza → Mutación
     selected = tournament_selection(population, fitness_values, k=tournament_k)
-    # selected = roulette_selection(population, fitness_values)
-    offspring = crossover_population(selected, probability_crossover)
-    offspring = mutate_population(offspring, rate=mutation_rate)
-
-    # ---- ELITISMO ----
-    if elitism > 0:
-        # Ordena población actual por fitness
-        elite_idx = np.argsort(fitness_values)[:elitism]
-        elites = [population[i][:] for i in elite_idx]
-        # Reemplaza parte de la descendencia con los elites
-        offspring[:elitism] = elites
-
-    # Nueva población
-    population = offspring
+    offspring = crossover_population(selected)
+    population = mutate_population(offspring, rate=mutation_rate)
 
 # ------------------------------------------------------------
 # 8) Resultados: mejor solución, rutas y gráficas

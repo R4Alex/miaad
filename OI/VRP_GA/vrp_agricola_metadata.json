@@ -1,0 +1,10 @@
+{
+  "depot": {
+    "id": 0,
+    "x": 50.0,
+    "y": 50.0
+  },
+  "K": 4,
+  "Q": 30,
+  "description": "VRP dataset for class GA parameter tuning. City grid 0..100, demands 2..9 boxes."
+}
